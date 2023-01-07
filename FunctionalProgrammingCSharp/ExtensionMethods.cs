@@ -23,7 +23,7 @@ public static class ExtensionMethods
 class Cache<T> where T : class, new()
 {
     private T Get(Guid id)
-    {
+    {       
         return new T();
     }
 

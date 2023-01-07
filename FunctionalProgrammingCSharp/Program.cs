@@ -135,9 +135,19 @@ foreach (var s in zipList)
 {
     Console.Write(s);
 }
+
 Console.WriteLine("");
 Console.WriteLine("Static pure formatter");
 ListFormatterPure.Format(shoppingList).ForEach(Console.WriteLine);
+
+//
+Console.WriteLine("Enter your name");
+var name = Console.ReadLine();
+Console.WriteLine($"Hello {name}");
+
+static string GreetingFor(string name) => $"Hello {name}";
+
+//
 Console.ReadKey();
 
 public record Product(string Name, decimal Price, bool IsFood);
@@ -185,7 +195,25 @@ static class ListFormatterPure //saf
 
     // public static List<string> Format(List<string> list) => list.Select(StringExt.ToSentenceCase).Zip(Enumerable.Range(1, list.Count), (s, i) => $"{i}. {s}").ToList();
 
-
-    public static List<string> Format(List<string> list) => list.AsParallel().Select(StringExt.ToSentenceCase).Zip(Range(1, list.Count), (s, i) => $"{i}. {s}").ToList()
-    ;
+    public static List<string> Format(List<string> list) => list.AsParallel().Select(StringExt.ToSentenceCase).Zip(Range(1, list.Count), (s, i) => $"{i}. {s}").ToList();
 }
+
+public abstract record Command(DateTime TimeStamp);
+
+public record MakeTransfer
+(
+    Guid DebitedAccountId,
+    string Beneficiary,
+    string Iban,
+    string Bic,
+    DateTime Date,
+    decimal Amount,
+    string Reference,
+    DateTime TimeStamp = default
+) : Command(TimeStamp)
+{
+    internal static MakeTransfer Dummy => new(default, default, default, default, default, default, default);
+}
+
+
+
